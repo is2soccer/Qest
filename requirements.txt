@@ -1,0 +1,6 @@
+pyaudio
+numpy
+matplotlib
+openai-whisper
+torch
+tkinter
