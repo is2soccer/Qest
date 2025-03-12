@@ -1,23 +1,25 @@
-from pyannote.audio.pipelines.speaker_diarization import SpeakerDiarization
+from pyannote.audio.pipelines import SpeakerDiarization
+from pyannote.audio import Model
 from pyannote.core import Segment
 import os
 from dotenv import load_dotenv
+import torch
 
 # 🔹 .env 파일에서 Hugging Face Access Token 로드
 load_dotenv()
 HF_TOKEN = os.getenv("HUGGINGFACE_ACCESS_TOKEN")
 
-# 🔥 Pyannote 모델 로드 시 인증 토큰 사용
+# ✅ 최신 모델 사용 (3.1)
 pipeline = SpeakerDiarization.from_pretrained(
-    "pyannote/speaker-diarization", 
+    "pyannote/speaker-diarization-3.1", 
     use_auth_token=HF_TOKEN
 )
 
 def diarize_audio(audio_path):
     """
-    Pyannote를 사용하여 주어진 오디오 파일에서 화자를 구분하고 타임스탬프를 반환합니다.
+    최신 Pyannote 모델을 사용하여 화자를 구분하고 타임스탬프를 반환
     """
-    print("🔍 화자 분리 실행 중...")
+    print("🔍 최신 Pyannote 모델을 사용한 화자 분리 실행 중...")
     diarization = pipeline(audio_path)
 
     speaker_segments = []
@@ -57,6 +59,12 @@ def save_diarized_transcript(audio_path, transcript_path):
     """
     Whisper 변환된 텍스트와 Pyannote의 화자 구분 데이터를 결합하여 최종 스크립트 생성
     """
+
+    # Pyannote는 WAV만 지원하므로 확장자 확인
+    if not audio_path.endswith(".wav"):
+        print(f"❌ Pyannote는 WAV 형식만 지원합니다. 변환된 WAV 파일을 사용하세요: {audio_path}")
+        return
+
     diarized_segments = diarize_audio(audio_path)
 
     # 🔍 Whisper 변환된 텍스트 파일 로드

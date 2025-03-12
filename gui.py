@@ -91,13 +91,12 @@ def wait_for_file_and_transcribe(audio_path):
     
     # 🔥 Whisper 변환 실행
     if transcribe_method == "local":
-        diarized_transcript = transcribe_audio_local(audio_path, text_path)
+        transcribed_text_path = transcribe_audio_local(audio_path, text_path)
     else:
-        diarized_transcript = transcribe_audio_api(audio_path, text_path)
+        transcribed_text_path = transcribe_audio_api(audio_path, text_path)
 
-    # 🔥 Pyannote 화자 구분 실행 (Whisper 변환된 파일을 기반으로)
-    if diarized_transcript:
-        root.after(0, lambda: result_label.config(text=f"✅ 화자 구분 완료: {diarized_transcript}"))
+    if transcribed_text_path:
+        root.after(0, lambda: result_label.config(text=f"✅ 변환 완료: {transcribed_text_path}"))
         root.after(0, lambda: summary_button.config(state=tk.NORMAL))
 
 def transcribe_test_audio():
@@ -107,11 +106,11 @@ def transcribe_test_audio():
         result_label.config(text="❌ test.m4a 파일이 존재하지 않습니다.")
         return
     if transcribe_method == "local":
-        diarized_transcript = transcribe_audio_local(test_audio_path, text_path)
+        transcribed_text_path = transcribe_audio_local(test_audio_path, text_path)
     else:
-        diarized_transcript = transcribe_audio_api(test_audio_path, text_path)
+        transcribed_text_path = transcribe_audio_api(test_audio_path, text_path)
 
-    root.after(0, lambda: result_label.config(text=f"✅ 변환 완료: {diarized_transcript}"))
+    root.after(0, lambda: result_label.config(text=f"✅ 변환 완료: {transcribed_text_path}"))
 
 def summarize_text_file():
     global latest_audio_path
