@@ -4,3 +4,5 @@ __pycache__/
 models/
 recordings/
 transcriptions/
+summaries/
+.env
