@@ -100,8 +100,8 @@ def wait_for_file_and_transcribe(audio_path):
         root.after(0, lambda: summary_button.config(state=tk.NORMAL))
 
 def transcribe_test_audio():
-    test_audio_path = "recordings/test.m4a"
-    text_path = test_audio_path.replace("recordings/", "transcriptions/").replace(".m4a", ".txt")
+    test_audio_path = "recordings/test.wav"
+    text_path = test_audio_path.replace("recordings/", "transcriptions/").replace(".wav", ".txt")
     if not os.path.exists(test_audio_path):
         result_label.config(text="❌ test.m4a 파일이 존재하지 않습니다.")
         return
