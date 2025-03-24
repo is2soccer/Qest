@@ -124,6 +124,7 @@ def summarize_text_file():
     with open(summary_path, "w", encoding="utf-8") as f:
         f.write(summary_text)
     root.after(0, lambda: result_label.config(text=f"✅ 요약 완료: {summary_path}"))
+    root.after(0, lambda: pdf_button.config(state=tk.NORMAL))  # 📄 PDF 버튼 활성화
 
 def summarize_test_file():
     test_text_path = "transcriptions/test.txt"
